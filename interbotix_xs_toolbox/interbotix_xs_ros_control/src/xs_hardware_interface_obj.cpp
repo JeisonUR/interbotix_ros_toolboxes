@@ -55,7 +55,7 @@ void XSHardwareInterface::init()
   auto gripper_future = srv_robot_info->async_send_request(gripper_info_srv);
 
   auto group_res = group_future.get();
-  num_joints = group_res->num_joints + 1;
+  num_joints = group_res->num_joints ;
   joint_state_indices = group_res->joint_state_indices;
 
   auto grip_res = gripper_future.get();
@@ -65,6 +65,7 @@ void XSHardwareInterface::init()
   joint_names.push_back(grip_res->joint_names.at(0));
 
   // Resize vectors
+  
   joint_positions.resize(num_joints);
   joint_velocities.resize(num_joints);
   joint_efforts.resize(num_joints);
@@ -177,6 +178,7 @@ return_type XSHardwareInterface::write()
   gripper_msg.name = gripper_name;
   gripper_msg.cmd = joint_position_commands.back() * 2;
 
+  
   for (size_t i{0}; i < num_joints; i++)
     group_msg.cmd.push_back(joint_position_commands.at(i));
 
